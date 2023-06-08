@@ -2,10 +2,10 @@
 
 # dependencies
 /node-api/node_modules
-/reactjs-web/node_modules
+/reactjs_wab/node_modules
 
 # production
-/reactjs-web/build
+/reactjs_wab/build
 
 
 /.pnp
