@@ -4,15 +4,20 @@ import {useEffect, useState} from "react"
 import {
     Table,
     Button,
-    Modal
+    Modal,
+    Form
 } from "react-bootstrap"
 function CategoryPage(){
 
-    const [x,setX] = useState(0)
-    const [y,setY] = useState(0)
+    
     const [show,setShow] = useState(false)
+    const [showForm,setShowForm] = useState(false)
     const [list,setList] = useState([])
     const [item,setItem] = useState({})
+
+    const [name,setName] = useState("")
+    const [description,setDescription] = useState("")
+    const [status,setStatus] = useState("")
 
     useEffect(()=>{
        getList();
@@ -62,9 +67,50 @@ function CategoryPage(){
         setItem(null)
     }
 
+    const onHideModalForm = () => {
+        setShowForm(false)
+    }
+
+    const clearForm = () => {
+        setName("")
+        setDescription("")
+        setStatus("")
+    }
+
+    const onSave = () => {
+        onHideModalForm()
+        var param = {
+            "name" : name,
+            "description" : description,
+            "parent_id" : null,
+            "status" : status
+        }
+        axios({
+            url:server+"category",
+            method:"post",
+            data:param
+        }).then(res=>{
+           if(res){
+                getList();
+                clearForm()
+           } 
+        })
+        
+    }
+
+    const onShowModalForm = () => {
+        setShowForm(true)
+    }
+
 
     return(
         <div style={{padding:20}}>
+            <div style={{padding:10,display:"flex",justifyContent:'space-between'}}>
+                <div>Category</div>
+                <div>
+                    <Button variant="primary" onClick={onShowModalForm}>New</Button>
+                </div>
+            </div>
            <Table striped bordered hover size='sm'>
             <thead>
                 <tr>
@@ -96,7 +142,7 @@ function CategoryPage(){
             </tbody>
            </Table >
 
-           <div
+            <div
                 className="modal show"
                 style={{ display: 'block', position: 'initial' }}
             >
@@ -112,6 +158,64 @@ function CategoryPage(){
                     <Modal.Footer>
                         <Button variant="secondary" onClick={onHideModal}>No</Button>
                         <Button variant="primary" onClick={onDelete}>Yes</Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+
+             
+            {/* Block modal form insert/update */}
+            <div
+                className="modal show"
+                style={{ display: 'block', position: 'initial' }}
+            >
+                <Modal show={showForm} onHide={onHideModalForm}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control 
+                                    value={name} // state name
+                                    type="input" 
+                                    placeholder="name" 
+                                    onChange={(event)=>{
+                                        setName(event.target.value) // get value from user onchange => set value to name state
+                                    }}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                <Form.Label>Description</Form.Label>
+                                <Form.Control 
+                                    value={description}
+                                    as="textarea" 
+                                    placeholder='Description'
+                                    rows={3}
+                                    onChange={(event)=>{
+                                        setDescription(event.target.value)
+                                    }}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                <Form.Label>Status</Form.Label>
+                                <Form.Control 
+                                    value={status}
+                                    type="input" 
+                                    placeholder="Status" 
+                                    onChange={(event)=>{
+                                        setStatus(event.target.value)
+                                    }}
+                                />
+                            </Form.Group>
+                        </Form>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={onHideModalForm}>Cancel</Button>
+                        <Button variant="secondary" onClick={clearForm}>Clear</Button>
+                        <Button variant="primary" onClick={onSave}>Save</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
