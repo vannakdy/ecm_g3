@@ -1,20 +1,12 @@
 
 import axios from 'axios'
 import {useEffect, useState} from "react"
-import {
-    Table,
-    Button,
-    Modal,
-    Form
-} from "react-bootstrap"
+import {  Table,  Button,  Modal, Form} from "react-bootstrap"
 function CategoryPage(){
-
-    
     const [show,setShow] = useState(false)
     const [showForm,setShowForm] = useState(false)
     const [list,setList] = useState([])
     const [item,setItem] = useState({})
-
     const [name,setName] = useState("")
     const [description,setDescription] = useState("")
     const [status,setStatus] = useState("")
@@ -69,6 +61,8 @@ function CategoryPage(){
 
     const onHideModalForm = () => {
         setShowForm(false)
+        setItem({})
+        clearForm()
     }
 
     const clearForm = () => {
@@ -85,9 +79,16 @@ function CategoryPage(){
             "parent_id" : null,
             "status" : status
         }
+        var url = server+"category"
+        var method = "post"
+        // case update
+        if(item.category_id != null){
+            param.category_id = item.category_id // add new key "category_id" to param
+            method = "put"
+        }
         axios({
-            url:server+"category",
-            method:"post",
+            url:url,
+            method:method,
             data:param
         }).then(res=>{
            if(res){
@@ -99,6 +100,14 @@ function CategoryPage(){
     }
 
     const onShowModalForm = () => {
+        setShowForm(true)
+    }
+
+    const onClickEdit = (item) => {
+        setItem(item)
+        setName(item.name)
+        setDescription(item.description)
+        setStatus(item.status)
         setShowForm(true)
     }
 
@@ -133,7 +142,7 @@ function CategoryPage(){
                             <td>{item.status}</td>
                             <td>{item.create_at}</td>
                             <td>
-                                <Button variant="primary">Edit</Button>{' '}
+                                <Button onClick={()=>onClickEdit(item)} variant="primary">Edit</Button>{' '}
                                 <Button onClick={()=>onClickBtnDelete(item)} variant="danger">Delete</Button>{' '}
                             </td>
                         </tr>
@@ -170,7 +179,7 @@ function CategoryPage(){
             >
                 <Modal show={showForm} onHide={onHideModalForm}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Create</Modal.Title>
+                        <Modal.Title>{item.category_id == null ? "Create" : "Update"}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -215,7 +224,7 @@ function CategoryPage(){
                     <Modal.Footer>
                         <Button variant="secondary" onClick={onHideModalForm}>Cancel</Button>
                         <Button variant="secondary" onClick={clearForm}>Clear</Button>
-                        <Button variant="primary" onClick={onSave}>Save</Button>
+                        <Button variant="primary" onClick={onSave}>{(item.category_id == null) ? "Save" : "Update"}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
