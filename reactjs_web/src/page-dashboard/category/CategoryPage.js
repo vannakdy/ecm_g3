@@ -6,7 +6,7 @@ function CategoryPage(){
     const [show,setShow] = useState(false)
     const [showForm,setShowForm] = useState(false)
     const [list,setList] = useState([])
-    const [item,setItem] = useState({})
+    const [item,setItem] = useState(null)
     const [name,setName] = useState("")
     const [description,setDescription] = useState("")
     const [status,setStatus] = useState("")
@@ -61,7 +61,7 @@ function CategoryPage(){
 
     const onHideModalForm = () => {
         setShowForm(false)
-        setItem({})
+        setItem(null)
         clearForm()
     }
 
@@ -82,7 +82,7 @@ function CategoryPage(){
         var url = server+"category"
         var method = "post"
         // case update
-        if(item.category_id != null){
+        if(item != null){
             param.category_id = item.category_id // add new key "category_id" to param
             method = "put"
         }
@@ -113,7 +113,7 @@ function CategoryPage(){
 
 
     return(
-        <div style={{padding:20}}>
+        <div style={{padding:10}}>
             <div style={{padding:10,display:"flex",justifyContent:'space-between'}}>
                 <div>Category</div>
                 <div>
@@ -179,7 +179,7 @@ function CategoryPage(){
             >
                 <Modal show={showForm} onHide={onHideModalForm}>
                     <Modal.Header closeButton>
-                        <Modal.Title>{item.category_id == null ? "Create" : "Update"}</Modal.Title>
+                        <Modal.Title>{item?.category_id == null ? "Create" : "Update"}</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -224,7 +224,7 @@ function CategoryPage(){
                     <Modal.Footer>
                         <Button variant="secondary" onClick={onHideModalForm}>Cancel</Button>
                         <Button variant="secondary" onClick={clearForm}>Clear</Button>
-                        <Button variant="primary" onClick={onSave}>{(item.category_id == null) ? "Save" : "Update"}</Button>
+                        <Button variant="primary" onClick={onSave}>{(item?.category_id == null) ? "Save" : "Update"}</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
