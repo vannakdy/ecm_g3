@@ -16,6 +16,9 @@ import ProductPageDash from "./page/product/PorductPage";
 import CategoryPageDash from "./page-dashboard/category/CategoryPage";
 import CartPageDash from "./page-dashboard/cart/CartPage";
 import OrderPageDash  from "./page-dashboard/order/OrderPage";
+import LayoutDashboardLogin from "./component/layout/LayoutDashboardLogin";
+import LoginDashBoard from "./page-dashboard/login/LoginDashBoard";
+import RegisterDashBoard from "./page-dashboard/register/RegisterDashBoard";
 
 
 function App() {
@@ -34,11 +37,19 @@ function App() {
           <Route path="product" element={<ProductPage />} />
           <Route path="cateory" element={<CategoryPage />} />
         </Route>
+
         {/* backend */}
         <Route path="/dashboard" element={<LayoutDashboard />}>
             <Route path="" element={<HomePageDash/> } />
             <Route path="category" element={<CategoryPageDash/>} />
         </Route>
+
+        {/* backend login register*/}
+        <Route path="/dashboard" element={<LayoutDashboardLogin />}>
+            <Route path="login" element={<LoginDashBoard/> } />
+            <Route path="register" element={<RegisterDashBoard/>} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
     

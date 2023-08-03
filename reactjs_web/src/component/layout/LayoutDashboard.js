@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DesktopOutlined,
   FileOutlined,
@@ -39,7 +39,38 @@ const items = [
   getItem('Logout', '9', <FileOutlined />),
 ];
 
-const itemsProfile = [
+
+
+// localStorage
+
+
+const LayoutDashboard = () => {
+  const navigate = useNavigate()
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(()=>{
+    const isLogin = localStorage.getItem("isLogin")
+    if(isLogin == "0"){ // not yet login
+      navigate("/dashboard/login")  // if not yet login
+    }
+  },[])
+
+
+
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  const onChangeMenu = (item) => {
+      console.log(item.key)
+      navigate(item.key)
+  }
+
+  const handleLogout = () => {
+    localStorage.setItem("isLogin","0")
+    window.location.href="/dashboard/login"
+  }
+
+  const itemsProfile = [
     {
       key: '1',
       label: (
@@ -67,27 +98,13 @@ const itemsProfile = [
     {
         key: '4',
         label: (
-          <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
+          <a onClick={handleLogout}>
             Logout
           </a>
         ),
       },
   ];
 
-
-
-const LayoutDashboard = () => {
-  const navigate = useNavigate()
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
-    const onChangeMenu = (item) => {
-        console.log(item.key)
-        navigate(item.key)
-    }
-    
   return (
     <Layout
       style={{
