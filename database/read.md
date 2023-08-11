@@ -21,9 +21,8 @@ customer // one
     password
     is_active
     create_at 
-
 customer_address // many
-    address_id PK
+    customer_address_id PK
     customer_id FK
     province_id FK
     firstname
@@ -33,7 +32,7 @@ customer_address // many
     create_at
 
 province
-    province_id
+    province_id // PK
     name
     description
     date_modified
@@ -64,13 +63,14 @@ product_image
     product_image_id
     product_id FK
     image
-    is_active
+    sort_order
 
 cart
     cart_id PK
     customer_id FK
     product_id FK
     quantity
+    option
     create_at
 
 order 
