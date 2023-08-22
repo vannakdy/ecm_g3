@@ -1,0 +1,49 @@
+https://www.javatpoint.com/mysql-foreign-key
+
+https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html
+
+ALTER TABLE `customer_address` ADD CONSTRAINT `fk_customer`  
+FOREIGN KEY ( `customer_id` ) REFERENCES customer ( `customer_id` ) 
+ON DELETE CASCADE; 
+
+-- ON DELETE CASCADE; -- remove parent -> remove childreen
+-- ON DELETE RESTRICT; -- can not remove parent if child use id parent
+-- ON DELETE SET NULL; -- when parent remove -> id_parent in child will change NULL
+-- ON DELETE SET DEFAULT; -- when paren remove -> id_parent set to default
+-- ON DELETE NO ACTION; -- like RESTRICT  modify table
+
+
+ALTER TABLE `customer_address` 
+DROP FOREIGN KEY `fk_customer`;
+
+ALTER TABLE `customer_address`  ADD CONSTRAINT `fk_customer`
+FOREIGN KEY ( `customer_id` ) REFERENCES customer ( `customer_id` ) 
+ON DELETE RESTRICT;
+--
+
+[CONSTRAINT constraint_name]  
+    FOREIGN KEY [foreign_key_name] (col_name, ...)  
+    REFERENCES parent_tbl_name (col_name,...)  
+    ON DELETE referenceOption  
+    ON UPDATE referenceOption  
+In the above syntax, we can see the following parameters:
+
+constraint_name: It specifies the name of the foreign key constraint. If we have not provided the constraint name, MySQL generates its name automatically.
+
+col_name: It is the names of the column that we are going to make foreign key.
+
+parent_tbl_name: It specifies the name of a parent table followed by column names that reference the foreign key columns.
+
+Refrence_option: It is used to ensure how foreign key maintains referential integrity using ON DELETE and ON UPDATE clause between parent and child table.
+
+MySQL contains five different referential options, which are given below:
+
+CASCADE: It is used when we delete or update any row from the parent table, the values of the matching rows in the child table will be deleted or updated automatically.
+
+SET NULL: It is used when we delete or update any row from the parent table, the values of the foreign key columns in the child table are set to NULL.
+
+RESTRICT: It is used when we delete or update any row from the parent table that has a matching row in the reference(child) table, MySQL does not allow to delete or update rows in the parent table.
+
+NO ACTION: It is similar to RESTRICT. But it has one difference that it checks referential integrity after trying to modify the table.
+
+SET DEFAULT: The MySQL parser recognizes this action. However, the InnoDB and NDB tables both rejected this action.

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:5306:5306
--- Generation Time: Aug 07, 2023 at 05:00 PM
+-- Generation Time: Aug 07, 2023 at 04:58 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -24,38 +24,35 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `category`
+-- Table structure for table `product_image`
 --
 
-CREATE TABLE `category` (
-  `category_id` int(11) NOT NULL,
-  `name` varchar(120) NOT NULL,
-  `description` text DEFAULT NULL,
-  `parent_id` int(11) DEFAULT 0,
-  `status` tinyint(4) DEFAULT 1,
-  `create_at` timestamp NOT NULL DEFAULT current_timestamp()
+CREATE TABLE `product_image` (
+  `product_image_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `category`
+-- Indexes for table `product_image`
 --
-ALTER TABLE `category`
-  ADD PRIMARY KEY (`category_id`);
+ALTER TABLE `product_image`
+  ADD PRIMARY KEY (`product_image_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `category`
+-- AUTO_INCREMENT for table `product_image`
 --
-ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+ALTER TABLE `product_image`
+  MODIFY `product_image_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

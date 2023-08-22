@@ -1,6 +1,6 @@
 
-
-
+constain 
+https://www.javatpoint.com/mysql-foreign-key
 
 employee 
     employee_id PK
@@ -104,14 +104,15 @@ order_status
     name
     message
     sort_order
+        ==== SQL =======
         Canceled  Your order has been canceled.
-        Phone denied  We couldn't reach you at the moment! Please contact us back.
-        Delivered  Your order is complete. We hope to see you shopping with us again soon!
-        Preparing order  We're processing your order. We'll SMS you an update when it's ready for delivery/store pickup.
+        Phone denied Phone denied.
+        Delivered  Your order is complete.
+        Preparing order  We're processing your order.
         Packed  Your order has been packed.
-        Shipped  Get excited! Your order has been shipped!
+        Shipped   Your order has been shipped!
         Store pick up  Your order is ready for store pickup!
-        Pending Your order has been placed successfully! Thanks for shopping with ZANDO.
+        Pending Your order has been placed successfully!
 
 wishlist
     wishlist_id PK 

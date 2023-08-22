@@ -4,10 +4,26 @@ const db = require("../util/db")
 const { isEmptyOrNull } = require("../util/service")
 
 const getAll = async (req,res) => {
-    const list = await db.query("SELECT * FROM category");
+    const list_category = await db.query("SELECT * FROM category")
+    const list_customer = await db.query("SELECT * FROM customer")
     res.json({
-        list:list,
+        list_category:list_category,
+        list_customer : list_customer
     })
+
+    // var sql = "SELECT * FROM category"
+    // db.query(sql,(error,row)=>{
+    //     if(!error){
+    //         var sql = "SELECT * FROM customer"
+    //         db.query(sql,(error1,row1)=>{
+    //             res.json({
+    //                 list1:row,
+    //                 list2:row1,
+    //             })
+    //         })
+           
+    //     }
+    // })
 
 }
 
@@ -47,7 +63,6 @@ const create = (req,res) => {
         })
         return 
     }
-    
     var sql = "INSERT INTO category (`name`, `description`, `parent_id`, `status`) VALUES (?, ?, ?, ?)"
     var param_data = [name,description,parent_id,status]
     db.query(sql,param_data,(error,row)=>{
