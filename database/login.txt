@@ -1,0 +1,14 @@
+# Register
+
+# Login 
+    - param 
+        username, password
+    - check user 
+    - check password 
+    - generate token //? jwt
+    - return profile //?
+
+# Change password
+    - old passsword
+    - new_password
+    - confirm_new_password

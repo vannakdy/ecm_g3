@@ -13,6 +13,8 @@ const getAll = (req,res) => {
             })
         }else{
             res.json({
+                user : req.user,
+                user_id : req.user_id,
                 list:row
             })
         }

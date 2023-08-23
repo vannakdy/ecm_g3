@@ -1,8 +1,9 @@
 
 // const {db} = require("../util/db")
 const db = require("../util/db")
-const { isEmptyOrNull } = require("../util/service")
+const { isEmptyOrNull, TOKEN_KEY } = require("../util/service")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 
 
@@ -117,6 +118,51 @@ const create = (req,res) => {
     })
 }
 
+const login = async (req,res) => {
+    var {username,password} = req.body;
+    var message = {};
+    if(isEmptyOrNull(username)) {message.username = "Please fill in username!"}
+    if(isEmptyOrNull(password)) {message.password = "Please fill in password!"}
+    if(Object.keys(message).length>0){
+        res.json({
+            error:true,
+            message:message
+        })
+        return 
+    }
+    var user = await db.query("SELECT * FROM customer WHERE username = ?",[username]);
+    if(user.length > 0){
+        var passDb = user[0].password // get password from DB (#$@*&(FKLSHKLERHIUH@OIUH@#))
+        var isCorrrect = bcrypt.compareSync(password,passDb)
+        if(isCorrrect){
+            var user = user[0]
+            delete user.password; // delete colums password from object user'
+            
+            var obj = {
+                user:user,
+                role:[],
+                token:"" // generate token JWT
+            }
+            
+            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY)
+            res.json({
+                ...obj,
+                access_token:access_token
+            }) 
+        }else{
+            res.json({
+                message:"Password incorrect!",
+                error:true
+            }) 
+        }
+    }else{
+        res.json({
+            message:"Account does't exist!. Please goto register!",
+            error:true
+        })
+    }
+}
+
 const update = (req,res) => { // update profile
     const {
         customer_id,
@@ -207,9 +253,6 @@ const listOneAddress = (req,res) => {
         }
     })
 }
-
-
-
 const newAddress = (req,res) => {
     var {
         customer_id,
@@ -315,5 +358,6 @@ module.exports = {
     listOneAddress,
     newAddress,
     updateAddress,
-    removeAddress
+    removeAddress,
+    login
 }
