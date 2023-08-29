@@ -1,7 +1,9 @@
 
 const db = require("../util/db")
-const { isEmptyOrNull } = require("../util/service")
-
+const { isEmptyOrNull, TOKEN_KEY } = require("../util/service")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const { getPermissionUser } = require("./auth.controller")
 const getAll = (req,res) => {
     
     var sql = "SELECT firstname AS FirstName, lastname AS LastName FROM employee"
@@ -88,6 +90,84 @@ const create = (req,res) => {
     })
 }
 
+const login = async (req,res) => {
+    var {username,password} = req.body;
+    var message = {};
+    if(isEmptyOrNull(username)) {message.username = "Please fill in username!"}
+    if(isEmptyOrNull(password)) {message.password = "Please fill in password!"}
+    if(Object.keys(message).length>0){
+        res.json({
+            error:true,
+            message:message
+        })
+        return 
+    }
+    var user = await db.query("SELECT * FROM employee WHERE tel = ?",[username]);
+    if(user.length > 0){
+        var passDb = user[0].password // get password from DB (#$@*&(FKLSHKLERHIUH@OIUH@#))
+        var isCorrrect = bcrypt.compareSync(password,passDb)
+        if(isCorrrect){
+            var user = user[0]
+            delete user.password; // delete colums password from object user'
+            var permission = await getPermissionUser(user.employee_id)
+            var obj = {
+                user:user,
+                permission:permission,
+            }
+            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"30s"})
+            var refresh_token = jwt.sign({data:{...obj}},TOKEN_KEY)
+            res.json({
+                ...obj,
+                access_token:access_token,
+                refresh_token:refresh_token,
+            }) 
+        }else{
+            res.json({
+                message:"Password incorrect!",
+                error:true
+            }) 
+        }
+    }else{
+        res.json({
+            message:"Account does't exist!. Please goto register!",
+            error:true
+        })
+    }
+}
+
+
+const setPassword = async (req,res) => {
+    const {
+        username,
+        password
+    } = req.body;
+    var message = {};
+    if(isEmptyOrNull(username)) {message.username = "Please fill in username!"}
+    if(isEmptyOrNull(password)) {message.password = "Please fill in password!"}
+    if(Object.keys(message).length>0){
+        res.json({
+            error:true,
+            message:message
+        })
+        return 
+    }
+    var employee = await db.query("SELECT * FROM employee WHERE tel = ?",[username]);
+    if(employee.length > 0){
+        var passwordGenerate =  bcrypt.hashSync(password,10) //  12344 => "jsERWERQ@#RSDFA#%$%#$%#@$%#$%SDFA#$#"
+        console.log(passwordGenerate)
+        var update = await db.query("UPDATE employee SET password = ? WHERE tel=? ",[passwordGenerate,username])
+        res.json({
+            message:"Passwrod update",
+            data:update
+        })
+    }else{
+        res.json({
+            message:"Account does't exist!. Please goto register!",
+            error:true
+        })
+    }
+}
+
 const update = (req,res) => {
     const {
         employee_id,
@@ -167,5 +247,7 @@ module.exports = {
     getOne,
     create,
     update,
-    remove
+    remove,
+    login,
+    setPassword
 }

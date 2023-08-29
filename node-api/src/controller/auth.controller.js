@@ -1,5 +1,6 @@
 const { TOKEN_KEY } = require("../util/service");
 const jwt = require("jsonwebtoken")
+const db = require("../util/db")
 
 exports.userGuard = (req,res,next) => { // get access token from client
     var authorization = req.headers.authorization; // token from client
@@ -25,4 +26,20 @@ exports.userGuard = (req,res,next) => { // get access token from client
             }
         })
     }
+}
+
+exports.getPermissionUser = async (id) => {
+    var sql = "SELECT"+
+    " p.code"+
+    " FROM employee c"+ 
+    " INNER JOIN role r ON c.role_id = r.role_id"+
+    " INNER JOIN role_permission rp ON r.role_id = rp.role_id"+
+    " INNER JOIN permission p ON rp.permission_id = p.permission_id"+
+    " WHERE c.employee_id = ? ";
+    var list = await db.query(sql,[id]);
+    var tmpArr = [];
+    list.map((item,index)=>[
+        tmpArr.push(item.code)
+    ])
+    return tmpArr;
 }

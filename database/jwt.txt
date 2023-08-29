@@ -25,3 +25,12 @@ const userGuard = (req,res,next) => {
     }
     return
 }
+
+// midlleware with parameter
+const paramMiddleware = (myParam) => {
+  return (req, res, next) => {
+    // implement your business logic using 'myParam'
+    // ...
+    next();
+  }
+}

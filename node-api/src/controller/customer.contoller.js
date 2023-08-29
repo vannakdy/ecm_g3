@@ -118,6 +118,7 @@ const create = (req,res) => {
     })
 }
 
+
 const login = async (req,res) => {
     var {username,password} = req.body;
     var message = {};
@@ -137,17 +138,17 @@ const login = async (req,res) => {
         if(isCorrrect){
             var user = user[0]
             delete user.password; // delete colums password from object user'
-            
             var obj = {
                 user:user,
-                role:[],
+                permission:[],
                 token:"" // generate token JWT
             }
-            
-            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY)
+            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"30s"})
+            var refresh_token = jwt.sign({data:{...obj}},TOKEN_KEY)
             res.json({
                 ...obj,
-                access_token:access_token
+                access_token:access_token,
+                refresh_token:refresh_token,
             }) 
         }else{
             res.json({

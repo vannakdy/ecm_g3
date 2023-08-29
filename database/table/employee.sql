@@ -31,14 +31,17 @@ CREATE TABLE `employee` (
   `employee_id` int(11) NOT NULL,
   `firstname` varchar(120) NOT NULL,
   `lastname` varchar(120) NOT NULL,
-  `tel` varchar(16) NOT NULL,
+  `tel` varchar(16) NOT NULL, -- username
+  `password` varchar(16) DEFAULT NULL, -- username
   `email` varchar(120) DEFAULT NULL,
   `base_salary` decimal(6,0) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `province` varchar(120) DEFAULT NULL,
   `country` varchar(120) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL,
   `create_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 --
 -- Dumping data for table `employee`
