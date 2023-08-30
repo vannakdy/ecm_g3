@@ -2,6 +2,7 @@
 import axios from 'axios'
 import {useEffect, useState} from "react"
 import {  Table,  Button,  Modal, Form} from "react-bootstrap"
+import { request } from '../../share/request'
 function CategoryPage(){
     const [show,setShow] = useState(false)
     const [showForm,setShowForm] = useState(false)
@@ -16,13 +17,9 @@ function CategoryPage(){
     },[])
 
     const server = "http://localhost:8081/api/"
-    const getList = () =>{ // arrow function
-        axios({
-            url : server+"category", // url api
-            method : "get",
-        }).then(res=>{
-            var data = res.data
-            setList(data.list)
+    const getList = () =>{
+        request("category","get").then(res=>{
+            setList(res.list)
         }).catch(err=>{
             console.log(err)
         })

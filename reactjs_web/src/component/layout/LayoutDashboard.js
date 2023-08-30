@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import {Outlet,useNavigate} from "react-router-dom"
 import { Avatar, Badge, Breadcrumb, Button, Dropdown, Input, Layout, Menu, Space, theme } from 'antd';
+import { getUser } from '../../share/helper';
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -38,11 +39,6 @@ const items = [
   ]),
   getItem('Logout', '9', <FileOutlined />),
 ];
-
-
-
-// localStorage
-
 
 const LayoutDashboard = () => {
   const navigate = useNavigate()
@@ -105,6 +101,7 @@ const LayoutDashboard = () => {
       },
   ];
 
+  const user = getUser();
   return (
     <Layout
       style={{
@@ -150,7 +147,7 @@ const LayoutDashboard = () => {
                             placement="bottomRight"
                             arrow
                     >
-                        <Button style={{marginLeft:10}}> Mr Dara</Button>
+                        <Button style={{marginLeft:10}}>{user.firstname+"-"+user.lastname}</Button>
                     </Dropdown>
                 </Space>
             </div>
