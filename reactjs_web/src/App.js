@@ -11,14 +11,34 @@ import ProductPage from "./page/product/PorductPage";
 import Layout from "./component/layout/Layout";
 
 import LayoutDashboard from "./component/layout/LayoutDashboard";
+import CustomerPageDash from "./page-dashboard/customer/CustomerPageDash";
+import EmployeeDash from "./page-dashboard/employee/EmployeeDash";
+import OrderPageDash from "./page-dashboard/order/OrderPageDash";
+
+// product dashboard
+import CategoryPageDash from "./page-dashboard/product/CategoryPageDash";
+import ProductPageDash from "./page-dashboard/product/ProductPageDash";
+
+// user 
+import RolePageDash from "./page-dashboard/user/RolePageDash";
+import UserRoleDash from "./page-dashboard/user/UserRoleDash";
+
+// system
+import OrderStatusPageDash from "./page-dashboard/system/OrderStatusPageDash";
+import OrderPaymentPageDash from "./page-dashboard/system/OrderPaymentPageDash";
+import ProvincePageDash from "./page-dashboard/system/ProvincePageDash";
+
+// report
+import TopSalePageDash from "./page-dashboard/report/TopSalePageDash";
+import SaleSummaryPageDash from "./page-dashboard/report/SaleSummaryPageDash";
+import SoldByCategoryPage from "./page-dashboard/report/SoldByCategoryPage";
+import SoldByProductPageDash from "./page-dashboard/report/SoldByProductPageDash";
+
 import HomePageDash from "./page-dashboard/home/HomePage";
-import ProductPageDash from "./page/product/PorductPage";
-import CategoryPageDash from "./page-dashboard/category/CategoryPage";
-import CartPageDash from "./page-dashboard/cart/CartPage";
-import OrderPageDash  from "./page-dashboard/order/OrderPage";
 import LayoutDashboardLogin from "./component/layout/LayoutDashboardLogin";
 import LoginDashBoard from "./page-dashboard/login/LoginDashBoard";
 import RegisterDashBoard from "./page-dashboard/register/RegisterDashBoard";
+
 
 
 function App() {
@@ -41,7 +61,25 @@ function App() {
         {/* backend */}
         <Route path="/dashboard" element={<LayoutDashboard />}>
             <Route path="" element={<HomePageDash/> } />
-            <Route path="category" element={<CategoryPageDash/>} />
+            <Route path="customer" element={<CustomerPageDash/>} />
+            <Route path="employee" element={<EmployeeDash/>} />
+            <Route path="order" element={<OrderPageDash/>} />
+
+            <Route path="product/category" element={<CategoryPageDash/>} />
+            <Route path="product/productlist" element={<ProductPageDash/>} />
+
+            <Route path="user/role" element={<RolePageDash/>} />
+            <Route path="user/userrole" element={<UserRoleDash/>} />
+
+            <Route path="system/orderstatus" element={<OrderStatusPageDash/>} />
+            <Route path="system/orderpayment" element={<OrderPaymentPageDash/>} />
+            <Route path="system/province" element={<ProvincePageDash/>} />
+
+            <Route path="report/topsale" element={<TopSalePageDash/>} />
+            <Route path="report/salesummary" element={<SaleSummaryPageDash/>} />
+            <Route path="report/soldbycategory" element={<SoldByCategoryPage/>} />
+            <Route path="report/soldbyproduct" element={<SoldByProductPageDash/>} />
+
         </Route>
 
         {/* backend login register*/}

@@ -7,11 +7,12 @@ import { Col, Row, Space } from "antd"
 import {BsAndroid2,BsApple,BsFacebook,BsYoutube,BsTiktok,BsTelegram} from "react-icons/bs"
 
 function Layout({}){
+
     const navigate = useNavigate()
-    const onClickMenu = (routeName) => { // arrow function
-        // alert(routeName)
+    const onClickMenu = (routeName) => {
         navigate(routeName)
     }
+
     const dataFollow = [
         {
             name : "Faceboox",
@@ -34,25 +35,21 @@ function Layout({}){
             link : "https://www.tiktok.com/login"
         }
     ]
+
     return (
         <div>
             <div className="mainHeader">
                 <div className="brandContain" onClick={()=>onClickMenu("/")}>
-                    <img 
-                        src={nit_image} // accss from local
-                        // src={"https://ecm-api.nitcambodia.com/public/nit.jpeg"} // from server
+                    {/* <img 
+                        src={nit_image} 
                         className="logo"
                     />
                     <div>
                         <div className="txtBrand">NIT Cambodia</div>
                         <div className="txtSubBrand">NIT Build IT Skill</div>
-                        {/* <div style={txtTestStyle}>Test inline</div> */}
-                    </div>
+                    </div> */}
                 </div>
                 <div className="menuContain">
-                    <div className="menu-icon">
-                        <div>Menu</div>
-                    </div>
                     <ul className="menu">
                         <li onClick={()=>onClickMenu("/")} className="menuItem">Home</li>
                         <li onClick={()=>onClickMenu("/about")} className="menuItem">About</li>
@@ -63,7 +60,9 @@ function Layout({}){
                     </ul>
                 </div>
             </div>
+
             <Outlet/>
+
             <div style={{marginTop:20,backgroundColor:'#FFE4C4',padding:'50px 10%'}}>
                 <Row>
                     <Col xs={{span:24}} md={{span:8}} style={{padding:20}}>
@@ -111,6 +110,7 @@ function Layout({}){
                     </Col>
                 </Row>
             </div>
+
             <div style={{textAlign:'center',padding:5}}>© 2023, NIT Cambodia. All Rights Reserved.</div>
         </div>
     )

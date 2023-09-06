@@ -6,7 +6,7 @@ import { request } from '../../share/request'
 import { formatDateClient, isPersmission } from '../../share/helper'
 import {Space} from "antd"
 
-function CategoryPage(){
+function CategoryPageDash(){
     const [show,setShow] = useState(false)
     const [showForm,setShowForm] = useState(false)
     const [list,setList] = useState([])
@@ -20,13 +20,14 @@ function CategoryPage(){
     },[])
 
     const server = "http://localhost:8081/api/"
-    
     const getList = () =>{
         request("category","get").then(res=>{
-            alert(res)
             if(res){
                 setList(res.list)
             }
+           
+        }).catch(err=>{
+            console.log(err)
         })
     }
 
@@ -121,7 +122,7 @@ function CategoryPage(){
                 
             </thead>
             <tbody>
-                {list?.map((item,index)=>{
+                {list.map((item,index)=>{
                     return (
                         <tr key={index}>
                             <td>{index+1}</td>
@@ -222,4 +223,4 @@ function CategoryPage(){
     )
 }
 
-export default CategoryPage;
+export default CategoryPageDash;

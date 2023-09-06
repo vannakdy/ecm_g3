@@ -1,3 +1,5 @@
+import moment from "moment"
+
 
 export const isEmptyOrNull = (value) => {
     return (value == "" || value == null || value == undefined) ? true : false
@@ -23,6 +25,18 @@ export const getPermission = () => {
     }
 }
 
+export const isPersmission = (code_permission) => { // code_permission = category.Delete
+    const arrPermission = getPermission();
+    if(arrPermission){
+        if(arrPermission.includes(code_permission)){
+            return true; // mean has permission
+        }
+        return false // no permission
+    }else{
+       return false // no permission
+    }
+}
+
 export const getAccessToken = () => {
     var access_token = localStorage.getItem("access_token")
     if(!isEmptyOrNull(access_token)){
@@ -41,3 +55,20 @@ export const getRefreshToken = () => {
         return null
     }
 }
+
+
+export const formatDateClient = (date) => {
+    if(!isEmptyOrNull(date)){
+        return moment(date).format("DD/MM/YYYY hh:mm");
+    }
+    return null
+}
+
+export const formatDateServer = (date) => {
+    if(!isEmptyOrNull(date)){
+        return moment(date).format("YYYY-MM-DD");
+    }
+    return null
+}
+
+

@@ -83,7 +83,6 @@
     .brandContain > .logo{
         width: 35px;
         height: 35px;
-        /* margin-right: 5px; */
     }
 
     .menuContain > .menu{
@@ -91,7 +90,7 @@
         padding: 10px;
         background-color: rgb(221, 221, 221);
         /* display: none; */
-        position: absolute;
+        /* position: absolute; */
         top: 40px;
         /* left: 0; */
         

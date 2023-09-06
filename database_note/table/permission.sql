@@ -40,6 +40,34 @@ INSERT INTO `permission` (`name`,`code`,`group`) VALUES
 ('Update','customer.Update','customer'),
 ('Delete','customer.Delete','customer');
 
+('Read','category.Read','category'),
+('Create','category.Create','category'),
+('Update','category.Update','category'),
+('Delete','category.Delete','category');
+
+
+INSERT INTO `permission` (`name`,`code`,`group`) VALUES
+('Read','category.Read','category'),
+('Create','category.Create','category'),
+('Update','category.Update','category'),
+('Delete','category.Delete','category');
+
+13,14,15,16
+
+INSERT INTO `role_permission` (`role_id`,`permission_id`) VALUES
+
+(1,13)
+(1,14)
+(1,15)
+(1,16)
+
+(4,13)
+(4,14)
+(4,15)
+
+
+
+
 
 
 

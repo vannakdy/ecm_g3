@@ -21,26 +21,67 @@ function getItem(label, key, icon, children) {
     label,
   };
 }
+// const items = [
+//   {
+//     key:'/dashboard',
+//     icon:<PieChartOutlined />,
+//     children:null,
+//     label:"Dashboard",
+//   },
+//   {
+//     key:'/customer',
+//     icon:<PieChartOutlined />,
+//     children:[
+//       {
+//         key:'customer/a',
+//         icon:<PieChartOutlined />,
+//         children:null,
+//         label:"A",
+//       },
+//       {
+//         key:'/b',
+//         icon:<PieChartOutlined />,
+//         children:null,
+//         label:"B",
+//       },
+//     ],
+//     label:"Customer",
+//   }
+// ]
 
 const items = [
   getItem('Dashboard', '/dashboard', <PieChartOutlined />),
-  getItem('Category', '/dashboard/category', <DesktopOutlined />),
+
+  getItem('Customer', '/dashboard/customer', <DesktopOutlined />),
   getItem('Employee', '/dashboard/employee', <DesktopOutlined />),
-  getItem('Report', 'report', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-    getItem('Alex', '6'),
-    getItem('Alex', '7'),
+  getItem('Order', '/dashboard/order', <DesktopOutlined />),
+
+  getItem('Product', '/dashboard/product', <TeamOutlined />, [
+    getItem('Category', '/dashboard/product/category'),
+    getItem('Product', '/dashboard/product/productlist'),
   ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [
-    getItem('Team 1', '6'), 
-    getItem('Team 2', '8')
+
+  getItem('User', '', <UserOutlined />, [
+    getItem('Role', '/dashboard/user/role'),
+    getItem('User role', '/dashboard/user/userrole'),
   ]),
-  getItem('Logout', '9', <FileOutlined />),
+
+  getItem('System', '/dashboard/system', <UserOutlined />, [
+    getItem('Order Status', '/dashboard/system/orderstatus'),
+    getItem('Order Payment', '/dashboard/system/orderpayment'),
+    getItem('Province', '/dashboard/system/province'),
+  ]),
+
+  getItem('Report', '/dashboard/report', <TeamOutlined />, [
+    getItem('Top sale', '/dashboard/report/topsale'),
+    getItem('Sale summary', '/dashboard/report/salesummary'),
+    getItem('Sold by catgory', '/dashboard/report/soldbycategory'),
+    getItem('Sold by product', '/dashboard/report/soldbyproduct'),
+  ]),
 ];
 
 const LayoutDashboard = () => {
+  document.title = "Dashboard"
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false);
   useEffect(()=>{
@@ -131,9 +172,7 @@ const LayoutDashboard = () => {
                    
             <div>
                 <Space style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    <Input.Search 
-                        placeholder='Search'
-                    />
+                
                     <Badge count={4} >
                         <Avatar  shape="square" size="small" />
                     </Badge>

@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { getAccessToken } from "./helper";
+import { message } from "antd";
 
 export const config = {
     base_server : "http://localhost:8081/api/",
@@ -20,7 +21,16 @@ export const request = (url,method,param) => {
     }).then(res=>{
         return res.data;
     }).catch(err=>{
-        console.log("error",err)
+        var status = err.response?.status
+        if(status == 404){
+            message.error("Route Not Found!")
+        }else if (status == 401){
+            message.error("You don't has permission access this method!")
+        }else if (status == 500){
+            message.error("Internal error server!")
+        }else{
+            message.error(err.message)
+        }
         return false
     }).finally(final=>{
         console.log("final",final)

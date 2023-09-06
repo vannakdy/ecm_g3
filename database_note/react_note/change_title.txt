@@ -1,0 +1,30 @@
+https://devdojo.com/krissanawat101/3-ways-to-set-a-document-title-in-react
+
+
+#Way1 
+import React, { useEffect, useState } from "react";
+const useDocumentTitle = title => {
+  const [document_title, setDoucmentTitle] = useState(title);
+   useEffect(() => {
+    document.title = document_title; 
+  },[document_title]);
+
+  return [document_title, setDoucmentTitle];
+};
+export {useDocumentTitle}
+
+// using 
+import React from "react";
+import {useDocumentTitle} from "setDocumentTitle"
+
+export default function App() {
+  const [document_title, setDoucmentTitle] = useDocumentTitle("Home page");
+return (
+    <div className="App">
+      <h1>Hello React App</h1>
+      <button onClick={() => setDoucmentTitle("About page")}>  
+       Change document title     
+       </button>   
+     </div>
+  );
+}

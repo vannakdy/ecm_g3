@@ -1,10 +1,11 @@
+import { DashboardSaleChart } from "../chart/DashboardSaleChart";
 
 
 function HomePage(){
 
     return(
         <div>
-            <h1>HomePage dashboard</h1>
+            <DashboardSaleChart />
         </div>
     )
 }
