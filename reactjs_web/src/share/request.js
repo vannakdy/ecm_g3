@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import { getAccessToken } from "./helper";
+import { getAccessToken, logout } from "./helper";
 import { message } from "antd";
 
 export const config = {
@@ -25,7 +25,9 @@ export const request = (url,method,param) => {
         if(status == 404){
             message.error("Route Not Found!")
         }else if (status == 401){
-            message.error("You don't has permission access this method!")
+            logout()
+            // console.log(err)
+            // message.error("You don't has permission access this method!")
         }else if (status == 500){
             message.error("Internal error server!")
         }else{

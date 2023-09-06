@@ -71,4 +71,9 @@ export const formatDateServer = (date) => {
     return null
 }
 
+export const logout = () => {
+    localStorage.setItem("isLogin","0")
+    window.location.href="/dashboard/login"
+}
+
 
