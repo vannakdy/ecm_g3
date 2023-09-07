@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input,message } from 'antd';
 import "./LoginDashBoard.css"
 import { request } from '../../share/request';
+import { storeProfileData, storeUserData } from '../../share/helper';
 
 
 const LoginDashBoard = () => {
@@ -15,11 +16,12 @@ const LoginDashBoard = () => {
     request("employee_login","post",param).then(res=>{
       setLoading(false)
       if(!res.error){
-        localStorage.setItem("isLogin","1")
-        localStorage.setItem("access_token",res.access_token)
-        localStorage.setItem("refresh_token",res.refresh_token)
-        localStorage.setItem("permission",JSON.stringify(res.permission))
-        localStorage.setItem("user",JSON.stringify(res.user))
+        storeUserData(res)
+        // localStorage.setItem("isLogin","1")
+        // localStorage.setItem("access_token",res.access_token)
+        // localStorage.setItem("refresh_token",res.refresh_token)
+        // localStorage.setItem("permission",JSON.stringify(res.permission))
+        // localStorage.setItem("user",JSON.stringify(res.user))
         window.location.href="/dashboard"
       }else{
         message.error(res.message)

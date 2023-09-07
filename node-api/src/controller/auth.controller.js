@@ -43,6 +43,8 @@ exports.userGuard = (parameter) => {
     }
 }
 
+
+
 exports.userGuardV1 = (req, res, next) => { // get access token from client
     var authorization = req.headers.authorization; // token from client
     var token_from_client = null

@@ -49,7 +49,6 @@ export const getAccessToken = () => {
 export const getRefreshToken = () => {
     var refresh_token = localStorage.getItem("refresh_token")
     if(!isEmptyOrNull(refresh_token)){
-        refresh_token = JSON.parse(refresh_token)
         return refresh_token
     }else{
         return null
@@ -74,6 +73,14 @@ export const formatDateServer = (date) => {
 export const logout = () => {
     localStorage.setItem("isLogin","0")
     window.location.href="/dashboard/login"
+}
+
+export const storeUserData = (param) => {
+    localStorage.setItem("isLogin","1")
+    localStorage.setItem("access_token",param.access_token)
+    localStorage.setItem("refresh_token",param.refresh_token)
+    localStorage.setItem("permission",JSON.stringify(param.permission))
+    localStorage.setItem("user",JSON.stringify(param.user))
 }
 
 

@@ -9,6 +9,8 @@ const employee = (app,base_route) => {
     app.delete(`${base_route}/:id`,userGuard,ct.remove)
     app.post(`${base_route}_login`,ct.login)
     app.post(`${base_route}_set_password`,ct.setPassword)
+    app.post(`${base_route}_refresh_token`,ct.refreshToken)
+    
 }
 module.exports = employee;
 

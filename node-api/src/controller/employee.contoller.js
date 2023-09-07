@@ -1,6 +1,6 @@
 
 const db = require("../util/db")
-const { isEmptyOrNull, TOKEN_KEY } = require("../util/service")
+const { isEmptyOrNull, TOKEN_KEY, REFRESH_KEY } = require("../util/service")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { getPermissionUser } = require("./auth.controller")
@@ -114,8 +114,8 @@ const login = async (req,res) => {
                 user:user,
                 permission:permission,
             }
-            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"1h"})
-            var refresh_token = jwt.sign({data:{...obj}},TOKEN_KEY)
+            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"30s"})
+            var refresh_token = jwt.sign({data:{...obj}},REFRESH_KEY)
             res.json({
                 ...obj,
                 access_token:access_token,
@@ -131,6 +131,43 @@ const login = async (req,res) => {
         res.json({
             message:"Account does't exist!. Please goto register!",
             error:true
+        })
+    }
+}
+
+const refreshToken = async (req,res)=>{
+    // check and verify refresh_token from client 
+    var {refresh_key} = req.body;
+    if(isEmptyOrNull(refresh_key)){
+        res.status(401).send({
+            message: 'Unauthorized',
+        });
+    }else{
+        jwt.verify(refresh_key,REFRESH_KEY, async (error,result)=>{
+            if(error){
+                res.status(401).send({
+                    message: 'Unauthorized',
+                    error: error
+                });
+            }else{
+                // សុំសិទ្ធទាញុយក acccess token ថ្មី
+                var username = result.data.user.tel;
+                var user = await db.query("SELECT * FROM employee WHERE tel = ?",[username]);
+                var user = user[0]
+                delete user.password; // delete colums password from object user'
+                var permission = await getPermissionUser(user.employee_id)
+                var obj = {
+                    user:user,
+                    permission:permission,
+                }
+                var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"30s"})
+                var refresh_token = jwt.sign({data:{...obj}},REFRESH_KEY)
+                res.json({
+                    ...obj,
+                    access_token:access_token,
+                    refresh_token:refresh_token,
+                })
+            }
         })
     }
 }
@@ -249,5 +286,6 @@ module.exports = {
     update,
     remove,
     login,
-    setPassword
+    setPassword,
+    refreshToken
 }
