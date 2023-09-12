@@ -2,11 +2,29 @@ const db = require("../util/db")
 const { isEmptyOrNull } = require("../util/service")
 
 const getlist = async (req,res) =>{
-    var sql = "SELECT * FROM product"
+    var sql = "SELECT * FROM product ORDER BY product_id DESC"
+    var sqlCategory = "SELECT * FROM category"
     // join category pagination search 
     const list = await db.query(sql)
+    const category = await db.query(sqlCategory)
+    const brand = [
+        {
+            id : 1,
+            name : "Apple"
+        },
+        {
+            id : 2,
+            name : "Microsoft"
+        },
+        {
+            id : 3,
+            name : "Dell"
+        },
+    ]
     res.json({
-        list :list
+        list :list,
+        list_category : category,
+        brand : brand,
     })
 }
 
@@ -46,7 +64,7 @@ const create = async (req,res) =>{
     var param = [category_id,barcode,name,quantity,price,image,description]
     var data = await db.query(sql,param)
     res.json({
-        list : "Created product",
+        message : "Created product",
         data:data
     })
 }
@@ -80,7 +98,7 @@ const update = (req,res) =>{
     var param = [category_id,barcode,name,quantity,price,image,description,product_id]
     var data = db.query(sql,param)
     res.json({
-        list : "Updated product",
+        message : "Updated product",
         data:data
     })
 }

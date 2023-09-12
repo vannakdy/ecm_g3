@@ -114,7 +114,7 @@ const login = async (req,res) => {
                 user:user,
                 permission:permission,
             }
-            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"30s"})
+            var access_token = jwt.sign({data:{...obj}},TOKEN_KEY,{expiresIn:"2h"})
             var refresh_token = jwt.sign({data:{...obj}},REFRESH_KEY)
             res.json({
                 ...obj,
