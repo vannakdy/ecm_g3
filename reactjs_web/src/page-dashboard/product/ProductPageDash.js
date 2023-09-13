@@ -9,31 +9,48 @@ import {
     Row,
     Select,
     Space,
+    Spin,
     Table, Tag, message,
 } from "antd"
-import { formatDateClient } from "../../share/helper"
+import { formatDateClient, isEmptyOrNull } from "../../share/helper"
 import {
     EditFilled,
     DeleteFilled
 } from "@ant-design/icons"
+import MainPageDash from "../component-dash/mainpage/MainPageDash"
 const {Option} = Select
 
 
 const ProductPageDash = () => {
 
+    const [loading,setLoading] = useState(false)
     const [list,setList] = useState([])
     const [categoryList,setCategoryList] = useState([])
     const [brand,setBrand] = useState([])
     const [visible,setVisible] = useState(false)
     const [productIdEdit,setProductIdEdit] = useState(null)
     const [form] = Form.useForm();
+    const [txtSearch,setTxtSearch] = useState("")
+    const [categorySearch,setCategorySearch] = useState(null)
 
     useEffect(()=>{
         getList()
     },[])
 
     const getList = () => {
-        request("product","get",{}).then(res=>{
+        setLoading(true)
+        var body = {
+            txtSearch : "P006"
+        }
+        var param = "?txtSearch=P006"
+        if(!isEmptyOrNull(categorySearch)){
+            param += "&categoryId="+categorySearch
+        }
+        
+        request("product"+param,"get",{}).then(res=>{
+            setTimeout(() => {
+                setLoading(false)
+            }, 1000);
             if(res){
                 setList(res.list)
                 setCategoryList(res.list_category)
@@ -59,7 +76,11 @@ const ProductPageDash = () => {
                 "image" :  item.image,
                 "description" :  item.description,
             }
+            setLoading(true)
             request("product","post",param).then(res=>{
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000);
                 if(res){
                     message.success(res.message)
                     form.resetFields();
@@ -78,7 +99,9 @@ const ProductPageDash = () => {
                 "image" :  item.image,
                 "description" :  item.description,
             }
+            setLoading(true)
             request("product","put",param).then(res=>{
+                setLoading(false)
                 if(res){
                     message.success(res.message)
                     form.resetFields();
@@ -130,15 +153,49 @@ const ProductPageDash = () => {
     // "create_by": null
 
     return(
-        <div>
+        <MainPageDash
+            loading={loading}
+        >
             <div style={{display:"flex",justifyContent:'space-between',padding:10}}>
-                <div>Product{list.length}</div>
+                <div>
+                    <div>Product</div>
+                    <Input.Search 
+                        placeholder="Search" 
+                        allowClear={true}
+                        style={{width:150}}
+                        onChange={(event)=>setTxtSearch(event.target.value)}
+                    />
+                    <Select
+                        // showSearch
+                        placeholder="Category"
+                        style={{width:150}}
+                        allowClear
+                        onChange={(value)=>setCategorySearch(value)}
+                    >
+                        {categoryList?.map((item,index)=>{
+                            return (
+                                <Option key={index} value={item.category_id}>{item.name}</Option>
+                            )
+                        })}
+                    </Select>
+
+                    <Button onClick={()=>getList()} type="primary">Filter</Button>
+
+                </div>
                 <Button onClick={()=>setVisible(true)} size="small" type="primary">New</Button>
             </div>
             <Table 
                 pagination={false}
                 size="small"
                 columns={[
+                    {
+                        key:"no",
+                        title:"No",
+                        // render:(item,recorde,index)=>index+1
+                        render:(item,recorde,index)=>{
+                            return index + 1
+                        }
+                    },
                     {
                         key:"barcode",
                         title:"Barcode",
@@ -158,6 +215,11 @@ const ProductPageDash = () => {
                         key:"price",
                         title:"Price",
                         dataIndex:"price"
+                    },
+                    {
+                        key:"category_name",
+                        title:"Category",
+                        dataIndex:"category_name"
                     },
                     {
                         key:"image",
@@ -345,7 +407,7 @@ const ProductPageDash = () => {
                </Form>
             </Modal>
             {/* End Modal */}
-        </div>
+        </MainPageDash>
     )
 }
 

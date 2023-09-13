@@ -5,6 +5,7 @@ import {  Table,  Button,  Modal, Form, } from "react-bootstrap"
 import { request } from '../../share/request'
 import { formatDateClient, isPersmission } from '../../share/helper'
 import {Space} from "antd"
+import MainPageDash from '../component-dash/mainpage/MainPageDash'
 
 function CategoryPageDash(){
     const [show,setShow] = useState(false)
@@ -102,7 +103,7 @@ function CategoryPageDash(){
 
 
     return(
-        <div style={{padding:10}}>
+        <MainPageDash>
             <div style={{padding:10,display:"flex",justifyContent:'space-between'}}>
                 <div>Category</div>
                 <div>
@@ -219,7 +220,7 @@ function CategoryPageDash(){
                     </Modal.Footer>
                 </Modal>
             </div>
-        </div>
+        </MainPageDash>
     )
 }
 

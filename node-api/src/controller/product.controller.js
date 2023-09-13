@@ -2,10 +2,18 @@ const db = require("../util/db")
 const { isEmptyOrNull } = require("../util/service")
 
 const getlist = async (req,res) =>{
-    var sql = "SELECT * FROM product ORDER BY product_id DESC"
-    var sqlCategory = "SELECT * FROM category"
-    // join category pagination search 
+    const {categoryId} = req.query;
+    var select = "SELECT p.*, c.name as category_name FROM product p "+
+    " INNER JOIN category c ON (p.category_id = c.category_id) ";
+    var where = "";
+    if(!isEmptyOrNull(categoryId)){
+        where += " WHERE p.category_id = "+categoryId
+    }
+    var order = " ORDER BY p.product_id DESC "
+    var sql = select + where + order
     const list = await db.query(sql)
+
+    var sqlCategory = "SELECT * FROM category"
     const category = await db.query(sqlCategory)
     const brand = [
         {
@@ -25,6 +33,8 @@ const getlist = async (req,res) =>{
         list :list,
         list_category : category,
         brand : brand,
+        bodyData:req.body,
+        queryData:req.query,
     })
 }
 
