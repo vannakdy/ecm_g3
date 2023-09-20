@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {request} from "../../share/request"
 import {
     Button,
@@ -18,6 +18,10 @@ import {
     DeleteFilled
 } from "@ant-design/icons"
 import MainPageDash from "../component-dash/mainpage/MainPageDash"
+import PrintInvoice from "../POS/PrintInvoice"
+import { useReactToPrint } from "react-to-print"
+import { InvoiceContentToPrint } from "../POS/InvoiceContentToPrint"
+
 const {Option} = Select
 
 
@@ -25,41 +29,72 @@ const ProductPageDash = () => {
 
     const [loading,setLoading] = useState(false)
     const [list,setList] = useState([])
+    const [totalRecord,setTotalRecord] = useState(0)
     const [categoryList,setCategoryList] = useState([])
     const [brand,setBrand] = useState([])
     const [visible,setVisible] = useState(false)
     const [productIdEdit,setProductIdEdit] = useState(null)
     const [form] = Form.useForm();
-    const [txtSearch,setTxtSearch] = useState("")
-    const [categorySearch,setCategorySearch] = useState(null)
+
+    const [objFilter,setObjFilter] = useState({
+        page : 1,
+        txtSearch: "",
+        categorySearch: null,
+        productStatus : null
+    })
+    const {page,txtSearch,categorySearch,productStatus} = objFilter
+    
 
     useEffect(()=>{
-        getList()
-    },[])
+        getList(objFilter)
+    },[page])
 
-    const getList = () => {
+    const getList = (parameter={}) => {
         setLoading(true)
-        var body = {
-            txtSearch : "P006"
-        }
-        var param = "?txtSearch=P006"
-        if(!isEmptyOrNull(categorySearch)){
-            param += "&categoryId="+categorySearch
-        }
-        
+        var param = "?page="+(parameter.page || 1)
+        param += "&txtSearch="+(parameter.txtSearch || "" )
+        param += "&categoryId="+(parameter.categorySearch)
+        param += "&productStatus="+(parameter.productStatus) 
         request("product"+param,"get",{}).then(res=>{
             setTimeout(() => {
                 setLoading(false)
-            }, 1000);
+            }, 200);
+            
             if(res){
                 setList(res.list)
+                if(res.totalRecord.length > 0){
+                    setTotalRecord(res.totalRecord[0])
+                }
+                
                 setCategoryList(res.list_category)
                 setBrand(res.brand)
             }
         })
     }
 
+    const clearFilter = () => {
+        // setObjFilter({
+        //     ...objFilter,
+        //     page:1,
+        //     txtSearch:"",
+        //     categorySearch:null,
+        //     productStatus:null
+        // })
+        // getlist(objFilter)
+
+        var objClear = {
+            ...objFilter,
+            page:1,
+            txtSearch:"",
+            categorySearch:null,
+            productStatus:null
+        }
+        setObjFilter({...objClear})
+        getList(objClear)
+    }
+
     const onCancelModal = () => {
+
         setVisible(false)
         setProductIdEdit(null)
         form.resetFields()
@@ -139,53 +174,103 @@ const ProductPageDash = () => {
         })
     }
 
-
-    // "product_id": 2,
-    // "category_id": 1,
-    // "barcode": "P002",
-    // "name": "Macbook Pro 2014",
-    // "quantity": 2,
-    // "price": 1700,
-    // "image": "",
-    // "description": "RAM 8GB, SSD215, 13Inch",
-    // "is_active": 1,
-    // "create_at": "2023-08-22T14:21:07.000Z",
-    // "create_by": null
+    const componentRef = useRef(null);
+    const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+      onBeforePrint:()=>{console.log("before print")},
+      onAfterPrint:()=>{console.log("affter print or cancel")},
+      onPrintError:()=>{console.log("error print")},
+    //   bodyClass:
+       
+    });
 
     return(
         <MainPageDash
             loading={loading}
         >
+            {/* <div style={{display:'none'}}>
+                <InvoiceContentToPrint ref={componentRef} />
+            </div>
+            <Button onClick={handlePrint} type="primary">Print</Button> */}
+
             <div style={{display:"flex",justifyContent:'space-between',padding:10}}>
                 <div>
-                    <div>Product</div>
-                    <Input.Search 
-                        placeholder="Search" 
-                        allowClear={true}
-                        style={{width:150}}
-                        onChange={(event)=>setTxtSearch(event.target.value)}
-                    />
-                    <Select
-                        // showSearch
-                        placeholder="Category"
-                        style={{width:150}}
-                        allowClear
-                        onChange={(value)=>setCategorySearch(value)}
-                    >
-                        {categoryList?.map((item,index)=>{
-                            return (
-                                <Option key={index} value={item.category_id}>{item.name}</Option>
-                            )
-                        })}
-                    </Select>
+                    <div style={{paddingBottom:5}}>
+                        <div style={{fontSize:16,fontWeight:'bold'}}>Product</div>
+                        <div style={{color:"#555",fontSize:12}}>{totalRecord?.total} Items</div>
+                        <div style={{color:"#555",fontSize:12}}>{totalRecord?.totalQty} PCS</div>
+                    </div>
+                    <Space>
+                        <Input.Search 
+                            value={txtSearch}
+                            placeholder="Search" 
+                            allowClear={true}
+                            style={{width:120}}
+                            onChange={(event)=>{
+                                setObjFilter({
+                                    ...objFilter,
+                                    txtSearch:event.target.value
+                                })
+                            }}
+                        />
+                        <Select
+                            value={categorySearch}
+                            placeholder="Category"
+                            style={{width:120}}
+                            allowClear
+                            onChange={(value)=>{
+                                setObjFilter({
+                                    ...objFilter,
+                                    categorySearch:value
+                                })
+                            }}
+                        >
+                            {categoryList?.map((item,index)=>{
+                                return (
+                                    <Option key={index} value={item.category_id}>{item.name}</Option>
+                                )
+                            })}
+                        </Select>
 
-                    <Button onClick={()=>getList()} type="primary">Filter</Button>
+                        <Select
+                            value={productStatus}
+                            placeholder="Status"
+                            style={{width:120}}
+                            allowClear
+                            onChange={(value)=>{
+                                setObjFilter({
+                                    ...objFilter,
+                                    productStatus:value
+                                })
+                            }}
+                        >
+                            <Option  value={"1"}>Actived</Option>
+                            <Option  value={"0"}>Disabled</Option>
+                        </Select>
+
+                        <Button  onClick={()=>getList(objFilter)} type="primary">Filter</Button>
+                        <Button  onClick={()=>clearFilter()} >Clear</Button>
+                    </Space>
 
                 </div>
-                <Button onClick={()=>setVisible(true)} size="small" type="primary">New</Button>
+                <Button onClick={()=>setVisible(true)}  type="primary">New</Button>
             </div>
             <Table 
-                pagination={false}
+                // pagination={true}
+                pagination={{
+                    defaultCurrent:1,
+                    total:totalRecord?.total,
+                    pageSize:10,
+                    onChange:(page,pageSize)=>{
+                        setObjFilter({
+                            ...objFilter,
+                            page:page
+                        })
+                    },
+                    // onShowSizeChange  // Called when pageSize is changed
+
+                }}
+                
                 size="small"
                 columns={[
                     {
@@ -257,8 +342,8 @@ const ProductPageDash = () => {
                         render:(text,record,index)=>{
                             return (
                                 <Space key={index}>
-                                    <Button onClick={()=>onEditClick(record)} type="primary" size="small"><EditFilled/></Button>
-                                    <Button onClick={()=>onEditRemove(record)} danger size="small"><DeleteFilled/></Button>
+                                    <Button onClick={()=>onEditClick(record)} type="primary" ><EditFilled/></Button>
+                                    <Button onClick={()=>onEditRemove(record)} danger ><DeleteFilled/></Button>
                                 </Space>
                             )
                         }
@@ -267,6 +352,7 @@ const ProductPageDash = () => {
                     
                 ]}
                 dataSource={list}
+                
             />
             {/* Modal */}
             <Modal
