@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:5306:5306
--- Generation Time: Sep 06, 2023 at 04:51 PM
+-- Generation Time: Sep 26, 2023 at 04:48 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -56,8 +56,8 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`category_id`, `name`, `description`, `parent_id`, `status`, `create_at`) VALUES
 (1, 'Macbook', 'Apple product', NULL, 1, '2023-07-25 14:30:24'),
-(2, 'Asus ssss', 'Asus product ssss', NULL, 1, '2023-07-25 14:31:35'),
-(3, 'HPs', 'HP products', NULL, 0, '2023-07-25 14:39:50'),
+(2, 'Asus', 'Asus product', NULL, 1, '2023-07-25 14:31:35'),
+(3, 'HP', 'HP products', NULL, 0, '2023-07-25 14:39:50'),
 (4, 'Lenevo', 'Lenevo product', NULL, 1, '2023-07-25 14:40:02'),
 (12, 'Test2', 'Test2 product', NULL, 1, '2023-07-27 15:18:02'),
 (13, 'Test2', 'Test2 product', NULL, 1, '2023-07-27 15:18:04'),
@@ -89,7 +89,6 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`customer_id`, `role_id`, `firstname`, `lastname`, `gender`, `username`, `password`, `is_active`, `create_at`) VALUES
-(1, 1, 'Mr', 'Bora', 0, '0966689955', '$2b$10$qOYgndhOOruExMY2tw5Xa.vr99ta1tKVklnLdrSfLvJJw6dP6VJou', 1, '2023-08-14 14:39:29'),
 (2, 4, 'Mr', 'Join', 1, '0966689956', '$2b$10$qOYgndhOOruExMY2tw5Xa.vr99ta1tKVklnLdrSfLvJJw6dP6VJou', 0, '2023-08-14 14:44:18'),
 (14, 0, 'Po', 'Boren', 1, '01299990000', '$2b$10$kEXDEEE8C4Kfh4ySO1ZjBetuLnNqElmL6ugYmDUoL412P0N8Aa...', 1, '2023-08-29 14:24:34'),
 (15, 0, 'Po', 'Boren', 1, '01299990001', '$2b$10$vFTeSREN0oxXv0aT602EgO5b/2mAG2BprYRGQB.vm8RIzc.GI.SOW', 1, '2023-08-29 14:24:47'),
@@ -120,10 +119,7 @@ CREATE TABLE `customer_address` (
 --
 
 INSERT INTO `customer_address` (`customer_address_id`, `customer_id`, `province_id`, `firstname`, `lastname`, `tel`, `address_des`, `create_at`) VALUES
-(1, 1, 1, 'So', 'Bona', '0966689955', '#233, st 333, PP....', '2023-08-14 14:39:29'),
 (2, 2, 2, 'Sok', 'Join', '0966689956', '#22113, st 33, PP....', '2023-08-14 14:44:18'),
-(4, 1, 1, 'Sok', 'BOra', '0968888889', '#123. St 4444, PP...(Work place)', '2023-08-14 15:23:43'),
-(7, 1, 1, 'Ly', 'Lina', '012446689', '#22113, st 33, PP....', '2023-08-16 13:03:52'),
 (14, 14, 1, 'Po', 'Boren', '01299990000', '#123 , st34, ...', '2023-08-29 14:24:34'),
 (15, 15, 1, 'Po', 'Boren', '01299990001', '#123 , st34, ...', '2023-08-29 14:24:47'),
 (16, 16, 1, 'Po', 'Boren', '01299990002', '#123 , st34, ...', '2023-08-29 14:24:53'),
@@ -340,7 +336,47 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`product_id`, `category_id`, `barcode`, `name`, `quantity`, `price`, `image`, `description`, `is_active`, `create_at`, `create_by`) VALUES
 (1, 1, 'P001', 'Macbook Pro 2013', 3, 1600, '', 'RAM 8GB, SSD215, 13Inch', 1, '2023-08-22 14:20:29', NULL),
 (2, 1, 'P002', 'Macbook Pro 2014', 2, 1700, '', 'RAM 8GB, SSD215, 13Inch', 1, '2023-08-22 14:21:07', NULL),
-(3, 1, 'P003', 'Macbook Pro 2015', 5, 2700, '', 'RAM 16GB, SSD215, 13Inch', 0, '2023-08-22 14:21:25', NULL);
+(3, 1, 'P003', 'Macbook Pro 2015', 5, 2700, '', 'RAM 16GB, SSD215, 13Inch', 0, '2023-08-22 14:21:25', NULL),
+(4, 3, 'P004', 'HP-2012', 100, 668, NULL, 'HP 2012 R-8GB SSD-512GB', 1, '2023-09-12 14:45:14', NULL),
+(5, 3, 'P005', 'HP-2013', 43, 1200, NULL, 'R-8GB, SSD-1T', 1, '2023-09-12 14:47:15', NULL),
+(6, 1, 'P006', 'MackBook-2013', 100, 1200, NULL, 'R-8GB, SSD-256', 1, '2023-09-12 14:49:31', NULL),
+(8, 1, 'P007', 'MackBook-2016', 100, 1200, NULL, '8G, SSD-512G', 1, '2023-09-13 14:34:04', NULL),
+(9, 1, 'P008', 'Macbook.Pro-2016 8GB, 256GB', 10, 120, '', 'Macbook.Pro-2016 8GB, 256GB', 1, '2023-09-18 15:32:15', NULL),
+(10, 1, 'P008', 'Macbook.Pro-2016 8GB, 512GB', 10, 1400, '', 'Macbook.Pro-2016 8GB, 512GB', 1, '2023-09-18 15:32:47', NULL),
+(11, 1, 'P0010', 'Macbook.Pro-2016 8GB, 1TB', 10, 1600, '', 'Macbook.Pro-2016 8GB, 1TB', 1, '2023-09-18 15:33:06', NULL),
+(12, 1, 'P0011', 'Macbook.Pro-2016 16GB, 512GB', 10, 1500, '', 'Macbook.Pro-2016 16GB, 512GB', 1, '2023-09-18 15:33:40', NULL),
+(13, 1, 'P0012', 'Macbook.Pro-2017 8GB, 512GB', 10, 1500, '', 'Macbook.Pro-2017 8GB, 512GB', 1, '2023-09-18 15:33:59', NULL),
+(14, 1, 'P0012', 'Macbook.Pro-2017 16GB, 512GB', 10, 1500, '', 'Macbook.Pro-2017 16GB, 512GB', 1, '2023-09-18 15:34:09', NULL),
+(15, 1, 'P0012', 'Macbook.Pro-2017 16GB, 1TB', 10, 1500, '', 'Macbook.Pro-2017 16GB, 1TB', 1, '2023-09-18 15:34:23', NULL),
+(16, 1, 'P0012', 'Macbook.Pro-2018 8GB, 1TB', 10, 1500, '', 'Macbook.Pro-2018 8GB, 1TB', 1, '2023-09-18 15:34:51', NULL),
+(17, 1, 'P0012', 'Macbook.Pro-2018 8GB, 512TB', 10, 1500, '', 'Macbook.Pro-2018 8GB, 512TB', 1, '2023-09-18 15:35:00', NULL),
+(18, 1, 'P0012', 'Macbook.Pro-2018 16GB, 512TB', 10, 1500, '', 'Macbook.Pro-2018 16GB, 512TB', 1, '2023-09-18 15:35:17', NULL),
+(19, 1, 'P0012', 'Macbook.Pro-2019 16GB, 512TB', 10, 1500, '', 'Macbook.Pro-2019 16GB, 512TB', 1, '2023-09-18 15:35:27', NULL),
+(20, 1, 'P0012', 'Macbook.Pro-2019 16GB, 1TB', 10, 1500, '', 'Macbook.Pro-2019 16GB, 1TB', 1, '2023-09-18 15:35:36', NULL),
+(21, 1, 'P0012', 'Macbook.Pro-2019 8GB, 1TB', 10, 1500, '', 'Macbook.Pro-2019 8GB, 1TB', 1, '2023-09-18 15:35:42', NULL),
+(22, 1, 'P0012', 'Macbook.Pro-2020 8GB, 1TB', 10, 1500, '', 'Macbook.Pro-2020 8GB, 1TB', 1, '2023-09-18 15:35:52', NULL),
+(23, 1, 'P0012', 'Macbook.Pro-2020 16GB, 1TB', 10, 1500, '', 'Macbook.Pro-2020 16GB, 1TB', 1, '2023-09-18 15:35:59', NULL),
+(24, 1, 'P0012', 'Macbook.Pro-2021 8GB, 256GB', 10, 1500, '', 'Macbook.Pro-2021 8GB, 256GB', 1, '2023-09-18 15:36:53', NULL),
+(25, 1, 'P0012', 'Macbook.Pro-2021 8GB, 512GB', 10, 1500, '', 'Macbook.Pro-2021 8GB, 512GB', 1, '2023-09-18 15:37:09', NULL),
+(26, 1, 'P0012', 'Macbook.Pro-2021 8GB,1TB', 10, 1500, '', 'Macbook.Pro-2021 8GB, 1TB', 1, '2023-09-18 15:37:17', NULL),
+(27, 1, 'P0012', 'Macbook.Pro-2021 16GB,256GB', 10, 1500, '', 'Macbook.Pro-2021 16GB,256GB', 1, '2023-09-18 15:37:37', NULL),
+(28, 1, 'P0012', 'Macbook.Pro-2021 16GB,512GB', 10, 1500, '', 'Macbook.Pro-2021 16GB,512GB', 1, '2023-09-18 15:37:52', NULL),
+(29, 1, 'P0012', 'Macbook.Pro-2021 16GB,1TB', 10, 1500, '', 'Macbook.Pro-2021 16GB,1TB', 1, '2023-09-18 15:38:01', NULL),
+(30, 1, 'P0012', 'Macbook.Pro-2021 32GB,1TB', 10, 1500, '', 'Macbook.Pro-2021 32GB,1TB', 1, '2023-09-18 15:38:40', NULL),
+(31, 1, 'P0012', 'Macbook.Pro-2022 8GB,256TB', 10, 1500, '', 'Macbook.Pro-2022 8GB,256TB', 1, '2023-09-18 15:39:04', NULL),
+(32, 1, 'P0012', 'Macbook.Pro-2022 8GB,512GB', 10, 1500, '', 'Macbook.Pro-2022 8GB,512GB', 1, '2023-09-18 15:39:23', NULL),
+(33, 1, 'P0012', 'Macbook.Pro-2022 16GB,512GB', 10, 1500, '', 'Macbook.Pro-2022 16GB,512GB', 1, '2023-09-18 15:39:33', NULL),
+(34, 1, 'P0012', 'Macbook.Pro-2022 16GB,1TB', 10, 1500, '', 'Macbook.Pro-2022 16GB,1TB', 1, '2023-09-18 15:39:41', NULL),
+(35, 4, 'P0012', 'EliteBook 2530p 16GB, 512SSD', 10, 1500, '', 'EliteBook 2530p 16GB, 512SSD', 1, '2023-09-18 15:47:54', NULL),
+(36, 4, 'P0012', 'EliteBook 2540p 16GB, 512SSD', 10, 1500, '', 'EliteBook 2540p 16GB, 512SSD', 1, '2023-09-18 15:48:06', NULL),
+(37, 4, 'P0012', 'EliteBook 2560p 16GB, 512SSD', 10, 1500, '', 'EliteBook 2560p 16GB, 512SSD', 1, '2023-09-18 15:48:19', NULL),
+(38, 4, 'P0012', 'EliteBook 2730p 16GB, 512SSD', 10, 1500, '', 'EliteBook 2730p 16GB, 512SSD', 1, '2023-09-18 15:48:34', NULL),
+(39, 4, 'P0012', 'EliteBook 2740p 16GB, 512SSD', 10, 1500, '', 'EliteBook 2740p 16GB, 512SSD', 1, '2023-09-18 15:49:02', NULL),
+(40, 4, 'P0012', 'EliteBook 8440p 16GB, 512SSD', 10, 1500, '', 'EliteBook 8440p 16GB, 512SSD', 1, '2023-09-18 15:49:13', NULL),
+(41, 4, 'P0012', 'EliteBook 8440w 16GB, 512SSD', 10, 1500, '', 'EliteBook 8440w 16GB, 512SSD', 1, '2023-09-18 15:49:33', NULL),
+(42, 4, 'P0012', 'EliteBook 8460p 16GB, 512SSD', 10, 1500, '', 'EliteBook 8460p 16GB, 512SSD', 1, '2023-09-18 15:49:49', NULL),
+(43, 4, 'P0012', 'EliteBook 8460w 16GB, 512SSD', 10, 1500, '', 'EliteBook 8460w 16GB, 512SSD', 1, '2023-09-18 15:50:01', NULL),
+(44, 4, 'P0012', 'EliteBook 8540p 16GB, 512SSD', 10, 1500, '', 'EliteBook 8540p 16GB, 512SSD', 1, '2023-09-18 15:50:13', NULL);
 
 -- --------------------------------------------------------
 
@@ -600,13 +636,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `customer_address`
 --
 ALTER TABLE `customer_address`
-  MODIFY `customer_address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `customer_address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `employee`
@@ -648,7 +684,7 @@ ALTER TABLE `permission`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `product_image`

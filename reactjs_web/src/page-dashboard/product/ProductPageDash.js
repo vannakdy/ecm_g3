@@ -271,7 +271,7 @@ const ProductPageDash = () => {
 
                 }}
                 
-                size="small"
+                // size="small"
                 columns={[
                     {
                         key:"no",

@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken")
 const { getPermissionUser } = require("./auth.controller")
 const getAll = (req,res) => {
     
-    var sql = "SELECT firstname AS FirstName, lastname AS LastName FROM employee"
+    
+    var sql = "SELECT employee_id,firstname,lastname,tel,email,base_salary,address,province,country,create_at,role_id FROM employee"
     db.query(sql,(error,row)=>{
         if(error){
             res.json({

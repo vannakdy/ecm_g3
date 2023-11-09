@@ -10,6 +10,7 @@ app.use(cors({ //fixed "has been blocked by CORS policy" from client
 app.use(express.json())
 app.get("/",(req,res)=>{ res.send("Hello API")})
 
+// just import all
 const category = require("./src/route/category.route") // import
 const product = require("./src/route/product.route")
 const employee = require("./src/route/employee.route")
@@ -20,6 +21,7 @@ const payment_method = require("./src/route/payment_method.route")
 const cart = require("./src/route/cart.route")
 const order = require("./src/route/order.route")
 
+// call
 category(app,"/api/category")
 product(app,"/api/product")
 employee(app,"/api/employee")

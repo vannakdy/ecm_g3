@@ -11,7 +11,8 @@ export const getUser = () => {
         user = JSON.parse(user)
         return user
     }else{
-        return null
+        logout()
+        return {}
     }
 }
 

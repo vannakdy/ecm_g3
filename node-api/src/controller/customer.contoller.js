@@ -7,19 +7,15 @@ const jwt = require("jsonwebtoken")
 
 
 
-const getAll =  (req,res) => {
-    var sql = "SELECT customer_id,firstname,lastname,gender,is_active,create_at FROM customer"
-    db.query(sql,(error,row)=>{
-        if(error){
-            res.json({
-                message:error,
-                error:true
-            })
-        }else{
-            res.json({
-                list:row
-            })
-        }
+const getAll = async  (req,res) => {
+    var sqlProvince = "SELECT * FROM province " 
+    var sqlCustomer = "SELECT customer_id,firstname,lastname,gender,is_active,create_at FROM customer ORDER BY customer_id DESC"
+    var listProvince = await db.query(sqlProvince)
+    var listCustomer = await db.query(sqlCustomer)
+    
+    res.json({
+        list:listCustomer,
+        listProvince:listProvince,
     })
 }
 
